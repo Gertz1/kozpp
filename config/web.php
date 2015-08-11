@@ -3,7 +3,7 @@ use yii\helpers\ArrayHelper;
 
 $params   = ArrayHelper::merge(
                 require(__DIR__ . '/params.php'),
-                require(__DIR__ . '/params.php'),
+                require(__DIR__ . '/params.php')
             );
 
 $config = [
@@ -52,7 +52,7 @@ $config = [
         ],
         'db' => ArrayHelper::merge(
                     require(__DIR__ . '/db.php'),
-                    require(__DIR__ . '/db-local.php'),
+                    require(__DIR__ . '/db-local.php')
                 )
             
     ],
