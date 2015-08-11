@@ -8,7 +8,10 @@ $params   = ArrayHelper::merge(
                 require(__DIR__ . '/params.php')
             );
 
-$db = require(__DIR__ . '/db.php');
+$db = ArrayHelper::merge(
+                    require(__DIR__ . '/db.php'),
+                    require(__DIR__ . '/db-local.php')
+                );
 
 return [
     'id' => 'basic-console',
