@@ -3,14 +3,15 @@
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \app\modules\user\models\LoginForm */
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
-$this->title = 'Login';
+use kartik\form\ActiveForm;
+
+$this->title = Yii::t('app', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-default-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="title"><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+    <p><?= Yii::t('user','Please fill out the following fields to login')?>:</p>
 
     <div class="row">
         <div class="col-lg-5">
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
                 <div style="color:#999;margin:1em 0">
-                    If you forgot your password you can <?= Html::a('reset it', ['request-password-reset']) ?>.
+                    <?= Yii::t('user','If you forgot your password you can')?> <?= Html::a(Yii::t('user', 'reset it'), ['request-password-reset']) ?>.
                 </div>
 
                 <div class="form-group">

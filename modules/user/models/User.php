@@ -28,6 +28,9 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 1;
     const STATUS_WAIT = 2;
 
+    const SCENARIO_PROFILE = 'profile';
+
+    
     /**
      * @inheritdoc
      */
@@ -63,7 +66,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-             ['username', 'required'],
+            ['username', 'required'],
             ['username', 'match', 'pattern' => '#^[\w_-]+$#i'],
             ['username', 'unique', 'targetClass' => self::className(), 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
@@ -78,6 +81,15 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => array_keys(self::getStatusesArray())],
         ];
     }
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_DEFAULT => ['username', 'email', 'status'], //Для админа
+            self::SCENARIO_PROFILE => ['email'], //Для пользователя
+        ];
+    }
+
 
     /**
      * @inheritdoc

@@ -7,7 +7,9 @@ $params   = ArrayHelper::merge(
             );
 
 $config = [
-    'id' => 'kozpp',
+    'id' => 'kozpp', 
+    'language' => 'ru',
+    'name' => 'Общественный защитник',
     'defaultRoute' => 'main/default/index',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -34,6 +36,24 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'forceTranslation' => true,
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+                'user' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'forceTranslation' => true,
+                    'fileMap' => [
+                        'user' => 'user.php',
+                    ],
+                ],
+            ],
         ],
         'user' => [
             'identityClass' => 'app\modules\user\models\User',
@@ -72,6 +92,9 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
+        ],
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
         ],
     ],
 ];

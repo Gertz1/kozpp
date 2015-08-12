@@ -5,10 +5,10 @@
 /* @var $model app\modules\main\models\ContactForm */
 
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use kartik\form\ActiveForm;
 use yii\captcha\Captcha;
 
-$this->title = 'Contact';
+$this->title = Yii::t('app', 'Contact');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="main-default-contact">
@@ -34,8 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
 
         <p>
-            If you have business inquiries or other questions, please fill out the following form to contact us.
-            Thank you.
+           <?= Yii::t('app', 'If you have business inquiries or other questions, please fill out the following form to contact us.');?> 
         </p>
 
         <div class="row">

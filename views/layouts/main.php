@@ -8,7 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
-use app\components\widgets\Alert;
+use kartik\widgets\AlertBlock;
 
 AppAsset::register($this);
 ?>
@@ -28,7 +28,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,17 +37,32 @@ AppAsset::register($this);
 echo Nav::widget([
     'options' => ['class' => 'navbar-nav navbar-right'],
     'items' => array_filter([
-        ['label' => 'Home', 'url' => ['/main/default/index']],
-        ['label' => 'About', 'url' => ['/main/default/about']],
-        ['label' => 'Contact', 'url' => ['/main/contact/index']],
-         Yii::$app->user->isGuest ?
-            ['label' => 'Sign Up', 'url' => ['/user/default/signup']] :
+        ['label' => Yii::t('app', 'Home'), 'url' => ['/main/default/index']],
+        ['label' => Yii::t('app', 'About'), 'url' => ['/main/default/about']],
+        ['label' => Yii::t('app', 'Contact'), 'url' => ['/main/contact/index']],
+        Yii::$app->user->isGuest ?
+            ['label' => Yii::t('app', 'Sign Up'), 'url' => ['/user/default/signup']] :
             false,
         Yii::$app->user->isGuest ?
-            ['label' => 'Login', 'url' => ['/user/default/login']] :
-            ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                'url' => ['/user/default/logout'],
-                'linkOptions' => ['data-method' => 'post']],
+            ['label' => Yii::t('app', 'Login'), 'url' => ['/user/default/login']] :
+            false,
+        !Yii::$app->user->isGuest ?
+            ['label' => Yii::t('app', 'Admin'), 'items' => [
+                ['label' => Yii::t('user', 'Admin'), 'url' => ['/admin/default/index']],
+                ['label' => Yii::t('user', 'User Management'), 'url' => ['/admin/users/index']],
+            ]] :
+            false,
+        !Yii::$app->user->isGuest ?
+            ['label' => Yii::t('user', 'Profile'), 'items' =>[
+                ['label' => Yii::t('user', 'Profile'),'url' => ['/user/profile/index']],
+                ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                                'url' => ['/user/default/logout'],
+                                'linkOptions' => ['data-method' => 'post']]
+
+            ]]:            
+            false,
+       
+            
     ]),
 ]);
     NavBar::end();
@@ -57,13 +72,20 @@ echo Nav::widget([
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+
+        <?= AlertBlock::widget([
+            'useSessionFlash' => true,
+            'type' => AlertBlock::TYPE_GROWL
+        ]);?>
+
         <?= $content ?>
+
     </div>
 </div>
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
+        <p class="pull-left">&copy; <?= Yii::$app->name?>  2011-<?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
