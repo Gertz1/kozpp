@@ -288,4 +288,20 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->email_confirm_token = null;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+
+    public function findUser($id)
+    {
+        return User::find($id)
+                ->joinWith('profile')
+                ->where(['profile.user_id' => $id])
+                ->one();
+    }
 }

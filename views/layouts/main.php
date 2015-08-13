@@ -54,7 +54,7 @@ echo Nav::widget([
             false,
         !Yii::$app->user->isGuest ?
             ['label' => Yii::t('user', 'Profile'), 'items' =>[
-                ['label' => Yii::t('user', 'Profile'),'url' => ['/user/profile/index']],
+                ['label' => Yii::t('user', 'Account'),'url' => ['/user/account/index']],
                 ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                                 'url' => ['/user/default/logout'],
                                 'linkOptions' => ['data-method' => 'post']]

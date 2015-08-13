@@ -148,6 +148,6 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        return $this->redirect(['profile/index'], 301);
+        return $this->redirect(['account/index'], 301);
     }
 }

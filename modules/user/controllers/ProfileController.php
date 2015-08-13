@@ -1,52 +1,88 @@
 <?php
 
 namespace app\modules\user\controllers;
- 
-use app\modules\user\models\User;
-use app\modules\user\models\ChangePasswordForm;
-use yii\filters\AccessControl;
-use yii\web\Controller;
+
 use Yii;
- 
+use app\modules\user\models\Profile;
+use app\modules\user\models\ProfileSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+
+/**
+ * ProfileController implements the CRUD actions for Profile model.
+ */
 class ProfileController extends Controller
 {
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['post'],
                 ],
             ],
         ];
     }
- 
+
+    /**
+     * Lists all Profile models.
+     * @return mixed
+     */
     public function actionIndex()
     {
+        $searchModel = new ProfileSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
-            'model' => $this->findModel(),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
- 
+
     /**
-     * @return User the loaded model
+     * Displays a single Profile model.
+     * @param integer $id
+     * @return mixed
      */
-    private function findModel()
+    public function actionView($id)
     {
-        return User::findOne(Yii::$app->user->identity->getId());
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 
-     public function actionUpdate()
+    /**
+     * Creates a new Profile model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
     {
-        $model = $this->findModel();
-        $model->scenario = User::SCENARIO_PROFILE;
- 
+        $model = new Profile();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Updates an existing Profile model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['account/index', /*'id' => $model->id*/]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -54,18 +90,32 @@ class ProfileController extends Controller
         }
     }
 
-    public function actionChangePassword()
+    /**
+     * Deletes an existing Profile model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
     {
-        $user = $this->findModel();
-        $model = new ChangePasswordForm($user);
- 
-        if ($model->load(Yii::$app->request->post()) && $model->changePassword()) {
-            return $this->redirect(['index']);
-        } else {
-            return $this->render('changePassword', [
-                'model' => $model,
-            ]);
-        }
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
     }
 
+    /**
+     * Finds the Profile model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Profile the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Profile::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

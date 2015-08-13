@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
 use kartik\date\DatePicker;
 use app\modules\admin\models\User;
 
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'pluginOptions' => ['format' => 'dd.mm.yyyy']
                 ]),
                 'attribute' => 'created_at',
-                'format' => 'd.m.Y',
+                'format' => 'date',
             ],
 
             [
